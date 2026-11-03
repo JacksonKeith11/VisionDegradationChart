@@ -1,0 +1,4 @@
+# Captured pages/responses from RevolutionEHR may contain patient data
+private/
+*.har
+.claude/

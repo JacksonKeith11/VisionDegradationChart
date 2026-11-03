@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chart Demo</title>
+  <link rel="stylesheet" href="src/panel.css">
+  <style>body { margin: 0; background: #eef1f5; font: 14px system-ui, sans-serif; } #vdc-panel { position: static; width: auto; max-height: none; margin: 16px; }</style>
+</head>
+<body>
+  <!-- Fictional patients for previewing the chart without RevolutionEHR. -->
+  <p style="margin:16px">
+    <label>Sample patient:
+      <select id="pick">
+        <option value="girl">Girl, 10, four exams</option>
+        <option value="boy">Boy, 15, three exams</option>
+        <option value="single">Unknown sex, one exam</option>
+      </select>
+    </label>
+  </p>
+  <section id="vdc-panel"><div class="vdc-body"></div></section>
+  <script src="src/projection.js"></script>
+  <script src="src/chart.js"></script>
+  <script>
+    const samples = {
+      girl: { dob: '2016-03-10', sex: 'F', exams: [
+        { date: '2022-04-01', od: { sphere: -0.75, cylinder: -0.25 }, os: { sphere: -0.5, cylinder: 0 } },
+        { date: '2023-04-12', od: { sphere: -1.25, cylinder: -0.25 }, os: { sphere: -1.0, cylinder: -0.25 } },
+        { date: '2024-05-02', od: { sphere: -2.0, cylinder: -0.5 }, os: { sphere: -1.5, cylinder: -0.25 } },
+        { date: '2025-06-20', od: { sphere: -2.5, cylinder: -0.5 }, os: { sphere: -2.25, cylinder: -0.5 } },
+      ] },
+      boy: { dob: '2011-01-05', sex: 'M', exams: [
+        { date: '2023-02-01', od: { sphere: -3.0, cylinder: -0.75 }, os: { sphere: -2.75, cylinder: -0.5 } },
+        { date: '2024-02-15', od: { sphere: -3.5, cylinder: -0.75 }, os: { sphere: -3.25, cylinder: -0.5 } },
+        { date: '2025-08-30', od: { sphere: -4.25, cylinder: -1.0 }, os: { sphere: -3.75, cylinder: -0.75 } },
+      ] },
+      single: { dob: '2014-09-09', sex: null, exams: [
+        { date: '2025-09-01', od: { sphere: -1.0, cylinder: 0 }, os: { sphere: -1.25, cylinder: -0.25 } },
+      ] },
+    };
+    const body = document.querySelector('.vdc-body');
+    const show = () => VDCChart.renderProjection(body, VDCProjection.buildProjection(samples[pick.value]));
+    pick.addEventListener('change', show);
+    show();
+  </script>
+</body>
+</html>

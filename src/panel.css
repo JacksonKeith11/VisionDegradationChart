@@ -1,0 +1,44 @@
+#vdc-launcher {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 2147483646;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 6px;
+  background: #1f5fbf;
+  color: #fff;
+  font: 600 13px system-ui, sans-serif;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+#vdc-panel {
+  position: fixed;
+  right: 20px;
+  bottom: 70px;
+  z-index: 2147483647;
+  width: min(1120px, calc(100vw - 40px));
+  max-height: calc(100vh - 100px);
+  overflow: auto;
+  padding: 16px 20px;
+  border-radius: 8px;
+  background: #fff;
+  color: #222;
+  font: 13px/1.4 system-ui, sans-serif;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+}
+
+#vdc-panel[hidden] { display: none; }
+#vdc-panel header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+#vdc-panel h2 { margin: 0; font-size: 16px; }
+#vdc-panel .vdc-close { border: 0; background: none; font-size: 20px; cursor: pointer; color: #555; }
+#vdc-panel .vdc-eyes { display: flex; flex-wrap: wrap; gap: 16px; }
+#vdc-panel .vdc-eye { flex: 1 1 480px; margin: 0; }
+#vdc-panel .vdc-eye figcaption { font-weight: 600; margin-bottom: 4px; }
+#vdc-panel .vdc-eye svg { width: 100%; height: auto; }
+#vdc-panel .vdc-legend { display: flex; flex-wrap: wrap; gap: 16px; list-style: none; padding: 0; margin: 0 0 8px; }
+#vdc-panel .vdc-legend li { display: flex; align-items: center; gap: 6px; }
+#vdc-panel .vdc-note { margin: 2px 0 0; color: #555; }
+#vdc-panel .vdc-warn { padding: 6px 10px; background: #fff4d6; border-radius: 4px; }
+#vdc-panel .vdc-error { color: #a33; }
