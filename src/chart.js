@@ -82,6 +82,10 @@
     note.textContent = data.trend
       ? `Historical trend: ${data.trend.slope.toFixed(2)} D/yr from ${data.history.length} exams.`
       : 'Only one exam on record, so there is no historical trend yet.';
+    const lastAge = data.history[data.history.length - 1].age;
+    if (lastAge >= stopAge) {
+      note.textContent += ` The last exam was at age ${Math.floor(lastAge)}, after progression is expected to stop (${stopAge}), so the with- and without-treatment projections are flat and overlap.`;
+    }
     wrap.appendChild(note);
     return wrap;
   }

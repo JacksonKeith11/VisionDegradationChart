@@ -49,11 +49,6 @@
     return [...byDate.values()];
   }
 
-  function hasLoadedPrescriptions() {
-    const id = currentPatientId();
-    return Boolean(id && prescriptionsByPatient.has(id));
-  }
-
   // Opens the patient's Rx page, which makes RevolutionEHR load the prescription history.
   function loadPrescriptions(timeoutMs = 20000) {
     const id = currentPatientId();
@@ -68,16 +63,15 @@
     });
   }
 
-  // Only switches pages when allowed, so a user mid-way through an exam isn't navigated away unexpectedly.
-  async function getCurrentPatient({ allowNavigation = false } = {}) {
+  // Switches to the patient's Rx page if the prescriptions haven't been captured yet.
+  async function getCurrentPatient() {
     const id = currentPatientId();
     if (!id) throw new Error('Open a patient in RevolutionEHR to see their projection.');
-    if (!prescriptionsByPatient.has(id) && !allowNavigation) return null;
     const prescriptions = await loadPrescriptions();
     const exams = toExams(prescriptions);
     if (exams.length === 0) throw new Error('This patient has no eyeglass prescriptions on record.');
     return { ...readDemographics(), exams };
   }
 
-  root.VDCRevolution = { currentPatientId, hasLoadedPrescriptions, getCurrentPatient };
+  root.VDCRevolution = { currentPatientId, getCurrentPatient };
 })(globalThis);

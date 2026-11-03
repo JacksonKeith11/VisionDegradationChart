@@ -1,11 +1,6 @@
-// Adds the "Vision projection" button and panel to RevolutionEHR patient pages.
+// Adds a "Vision Projection" button to the patient header's button row and a panel for the chart.
 (function () {
-  if (document.getElementById('vdc-launcher')) return;
-
-  const launcher = document.createElement('button');
-  launcher.id = 'vdc-launcher';
-  launcher.type = 'button';
-  launcher.textContent = 'Vision projection';
+  if (document.getElementById('vdc-panel')) return;
 
   const panel = document.createElement('section');
   panel.id = 'vdc-panel';
@@ -28,20 +23,11 @@
     return p;
   }
 
-  async function render(allowNavigation) {
+  async function render() {
     title.textContent = 'Vision degradation projection';
     showMessage('Loading patient data…');
     try {
-      const patient = await globalThis.VDCRevolution.getCurrentPatient({ allowNavigation });
-      if (!patient) {
-        const p = showMessage("This patient's prescriptions haven't been loaded yet. ");
-        const load = document.createElement('button');
-        load.type = 'button';
-        load.textContent = 'Open Rx page and load';
-        load.addEventListener('click', () => render(true));
-        p.appendChild(load);
-        return;
-      }
+      const patient = await globalThis.VDCRevolution.getCurrentPatient();
       title.textContent = `Vision degradation projection — ${patient.name}`;
       globalThis.VDCChart.renderProjection(body, globalThis.VDCProjection.buildProjection(patient));
     } catch (err) {
@@ -49,26 +35,55 @@
     }
   }
 
-  function syncVisibility() {
-    const onPatient = Boolean(globalThis.VDCRevolution.currentPatientId());
-    launcher.hidden = !onPatient;
-    if (!onPatient) panel.hidden = true;
+  function toggle() {
+    panel.hidden = !panel.hidden;
+    if (!panel.hidden) render();
   }
 
-  launcher.addEventListener('click', () => {
-    panel.hidden = !panel.hidden;
-    if (!panel.hidden) render(false);
-  });
-  panel.querySelector('.vdc-close').addEventListener('click', () => (panel.hidden = true));
-  // RevolutionEHR changes routes with history.pushState, which fires no event a content script can hear.
-  let lastUrl = location.href;
-  setInterval(() => {
-    if (location.href !== lastUrl) {
-      lastUrl = location.href;
-      syncVisibility();
-    }
-  }, 1000);
+  // Mirrors the header's own markup: each button sits in a <maj-button> wrapper, separated by spaces.
+  function ensureHeaderButton() {
+    if (document.getElementById('vdc-header-button')) return;
+    const anchor = document.querySelector('pms-patient-header [data-test-id="imaging-patient-header-button"]');
+    const anchorWrapper = anchor && anchor.closest('maj-button');
+    if (!anchorWrapper) return;
 
-  document.body.append(launcher, panel);
-  syncVisibility();
+    const wrapper = document.createElement('maj-button');
+    wrapper.className = anchorWrapper.className;
+    wrapper.style.display = 'inline-block';
+    const button = document.createElement('button');
+    button.id = 'vdc-header-button';
+    button.type = 'button';
+    button.className = anchor.className;
+    button.textContent = 'Vision Projection';
+    button.addEventListener('click', toggle);
+    wrapper.appendChild(button);
+    anchorWrapper.after(document.createTextNode(' '), wrapper);
+  }
+
+  panel.querySelector('.vdc-close').addEventListener('click', () => (panel.hidden = true));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !panel.hidden) panel.hidden = true;
+  });
+  document.body.append(panel);
+
+  // RevolutionEHR re-renders the header when the patient changes and routes with history.pushState,
+  // which fires no event a content script can hear. Watch the DOM instead, at most once per frame.
+  let lastPatient = globalThis.VDCRevolution.currentPatientId();
+  let scheduled = false;
+  function onDomChange() {
+    scheduled = false;
+    ensureHeaderButton();
+    const patient = globalThis.VDCRevolution.currentPatientId();
+    if (patient !== lastPatient) {
+      lastPatient = patient;
+      panel.hidden = true;
+    }
+  }
+  new MutationObserver(() => {
+    if (!scheduled) {
+      scheduled = true;
+      requestAnimationFrame(onDomChange);
+    }
+  }).observe(document.body, { childList: true, subtree: true });
+  ensureHeaderButton();
 })();

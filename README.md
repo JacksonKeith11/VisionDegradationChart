@@ -14,7 +14,7 @@ Projections start from the patient's most recent exam.
 
 1. Open `chrome://extensions` and turn on **Developer mode**.
 2. Click **Load unpacked** and choose this folder.
-3. Open a patient in RevolutionEHR and click **Vision projection** in the bottom-right corner.
+3. Open a patient in RevolutionEHR and click **Vision Projection** in the patient header's button row (next to Imaging).
 
 ## Preview without RevolutionEHR
 

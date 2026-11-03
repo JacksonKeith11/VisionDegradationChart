@@ -1,32 +1,19 @@
-#vdc-launcher {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  z-index: 2147483646;
-  padding: 10px 14px;
-  border: 0;
-  border-radius: 6px;
-  background: #1f5fbf;
-  color: #fff;
-  font: 600 13px system-ui, sans-serif;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-}
-
 #vdc-panel {
   position: fixed;
-  right: 20px;
-  bottom: 70px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 2147483647;
   width: min(1120px, calc(100vw - 40px));
-  max-height: calc(100vh - 100px);
+  max-height: calc(100vh - 40px);
   overflow: auto;
   padding: 16px 20px;
   border-radius: 8px;
   background: #fff;
   color: #222;
   font: 13px/1.4 system-ui, sans-serif;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+  /* The second shadow dims the page behind the panel. */
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3), 0 0 0 100vmax rgba(0, 0, 0, 0.35);
 }
 
 #vdc-panel[hidden] { display: none; }
