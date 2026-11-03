@@ -5,7 +5,13 @@
   "description": "Charts projected myopia progression for the open RevolutionEHR patient: untreated, treated, and historical trend.",
   "content_scripts": [
     {
-      "matches": ["https://*.revolutionehr.com/*"],
+      "matches": ["https://revolutionehr.com/*", "https://*.revolutionehr.com/*"],
+      "js": ["src/intercept.js"],
+      "world": "MAIN",
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["https://revolutionehr.com/*", "https://*.revolutionehr.com/*"],
       "js": ["src/projection.js", "src/chart.js", "src/revolutionehr.js", "src/content.js"],
       "css": ["src/panel.css"],
       "run_at": "document_idle"

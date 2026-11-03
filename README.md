@@ -32,7 +32,8 @@ Then open http://localhost:8765/demo.html.
 | --- | --- |
 | `src/projection.js` | Projection math (pure functions) |
 | `src/chart.js` | SVG chart rendering |
-| `src/revolutionehr.js` | Reads the open patient from RevolutionEHR |
+| `src/intercept.js` | Runs in the page; copies the prescription history when RevolutionEHR loads it |
+| `src/revolutionehr.js` | Reads the patient header and the captured prescriptions |
 | `src/content.js` | Adds the button and panel to RevolutionEHR pages |
 
 ## Patient data
