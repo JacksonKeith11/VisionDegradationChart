@@ -1,10 +1,20 @@
-# Vision Degradation Chart
+# Myopia Prediction
 
-A Google Chrome extension for RevolutionEHR that charts the projected myopia progression of the patient you have open. It works inside your existing RevolutionEHR login and adds a **Vision Projection** button to the patient header.
+A Google Chrome extension for RevolutionEHR that charts the projected myopia progression of the patient you have open. It works inside your existing RevolutionEHR login and adds a **Myopia Prediction** button to the patient header.
 
 For each eye (OD and OS), the chart plots spherical equivalent (sphere + cylinder ÷ 2) against age:
 
-- **Without treatment** (red) — worsens 0.75 D per year until age 18 for female patients or 22 for male patients, then holds steady. If sex is not recorded, 22 is used.
+- **Without treatment** (red) — worsens at an age-based rate until age 18 for female patients or 22 for male patients, then holds steady. If sex is not recorded, 22 is used.
+
+  | Age | Boys | Girls |
+  | --- | --- | --- |
+  | 6 and under | −1.00 D/yr | −1.09 D/yr |
+  | 7–10 | −0.75 D/yr | −0.84 D/yr |
+  | 11–12 | −0.67 D/yr | −0.76 D/yr |
+  | 13–14 | −0.50 D/yr | −0.59 D/yr |
+  | 15 and over | −0.37 D/yr | −0.46 D/yr |
+
+  Tick **Asian** above the chart to add a further −0.11 D/yr at every age. If sex is not recorded, the girls' rates are used. The rates used for the patient are listed under the legend.
 - **With treatment** (green band) — from no change to 0.25 D worse per year, until the same age.
 - **Current trend** (dashed blue) — a best-fit line through the patient's past eyeglass prescriptions, continued to the same age.
 
@@ -36,7 +46,7 @@ The extension only runs on RevolutionEHR pages. It reads the patient's name, dat
    Click **Load unpacked** (top-left), browse to **Documents › VisionDegradationChart-main › VisionDegradationChart-main**, and click **Select Folder**.
    Pick the folder that contains the `manifest.json` file. Windows usually creates a folder with the same name inside another one, so you may need to open it twice.
 6. **Check it loaded.**
-   **Vision Degradation Chart** now appears in the list of extensions with its switch turned on.
+   **Myopia Prediction** now appears in the list of extensions with its switch turned on.
 7. **Reload RevolutionEHR.**
    If RevolutionEHR is already open, reload the tab (press **F5**) and sign in again.
 
@@ -56,16 +66,17 @@ The extension only runs on RevolutionEHR pages. It reads the patient's name, dat
    Click **Load unpacked** (top-left), go to **Documents › VisionDegradationChart-main**, and click **Select**.
    Pick the folder that contains the `manifest.json` file.
 6. **Check it loaded.**
-   **Vision Degradation Chart** now appears in the list of extensions with its switch turned on.
+   **Myopia Prediction** now appears in the list of extensions with its switch turned on.
 7. **Reload RevolutionEHR.**
    If RevolutionEHR is already open, reload the tab (press **⌘ R**) and sign in again.
 
 ## Using it
 
 1. Sign in to RevolutionEHR in Chrome and open a patient.
-2. Click **Vision Projection** in the row of buttons under the patient's name (after **Imaging**).
+2. Click **Myopia Prediction** in the row of buttons under the patient's name (after **Imaging**).
 3. If the patient's prescriptions haven't been loaded yet, RevolutionEHR switches to the patient's **Rx** page to load them, then the chart appears in the middle of the screen.
-4. Hover over a blue dot to see the prescription date and value. Close the chart with **×** or the **Esc** key.
+4. If the patient is Asian, tick **Asian** at the top of the chart. This isn't read from RevolutionEHR and resets for each patient.
+5. Hover over a blue dot to see the prescription date and value. Close the chart with **×** or the **Esc** key.
 
 The chart is most useful for children and teenagers who are nearsighted and have at least two eyeglass prescriptions a year or more apart. For patients already past the stop age, the with- and without-treatment lines are flat and overlap.
 
@@ -75,14 +86,14 @@ Only eyeglass prescriptions are used; contact lens prescriptions are not include
 
 1. Download the ZIP again (step 1 of setup).
 2. Delete the contents of your existing **VisionDegradationChart-main** folder and replace them with the contents of the new download, keeping the folder in the same place.
-3. Go to `chrome://extensions` and click the circular **reload** arrow on **Vision Degradation Chart**.
+3. Go to `chrome://extensions` and click the circular **reload** arrow on **Myopia Prediction**.
 4. Reload any open RevolutionEHR tabs and sign in again.
 
 ## Troubleshooting
 
 | Problem | What to do |
 | --- | --- |
-| No **Vision Projection** button | Make sure the extension is switched on at `chrome://extensions`, then reload the RevolutionEHR tab. The button only appears once a patient is open. |
+| No **Myopia Prediction** button | Make sure the extension is switched on at `chrome://extensions`, then reload the RevolutionEHR tab. The button only appears once a patient is open. |
 | "Manifest file is missing or unreadable" when loading | You selected the wrong folder. Choose the folder that directly contains `manifest.json`. |
 | Chrome shows a warning about developer mode extensions | This is expected for extensions installed this way. Dismiss it; don't click **Remove**. |
 | The extension shows an error after the folder was moved or deleted | Put the folder back, or remove the extension and repeat setup from step 3. |
@@ -91,7 +102,7 @@ Only eyeglass prescriptions are used; contact lens prescriptions are not include
 
 ## Removing it
 
-Go to `chrome://extensions`, click **Remove** on **Vision Degradation Chart**, then delete the **VisionDegradationChart-main** folder.
+Go to `chrome://extensions`, click **Remove** on **Myopia Prediction**, then delete the **VisionDegradationChart-main** folder.
 
 ## Feedback
 

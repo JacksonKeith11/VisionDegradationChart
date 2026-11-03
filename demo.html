@@ -39,7 +39,7 @@
       ] },
     };
     const body = document.querySelector('.vdc-body');
-    const show = () => VDCChart.renderProjection(body, VDCProjection.buildProjection(samples[pick.value]));
+    const show = () => VDCChart.renderPatient(body, samples[pick.value]);
     pick.addEventListener('change', show);
     show();
   </script>

@@ -1,4 +1,4 @@
-// Adds a "Vision Projection" button to the patient header's button row and a panel for the chart.
+// Adds a "Myopia Prediction" button to the patient header's button row and a panel for the chart.
 (function () {
   if (document.getElementById('vdc-panel')) return;
 
@@ -7,7 +7,7 @@
   panel.hidden = true;
   panel.innerHTML = `
     <header>
-      <h2>Vision degradation projection</h2>
+      <h2>Myopia prediction</h2>
       <button type="button" class="vdc-close" aria-label="Close">×</button>
     </header>
     <div class="vdc-body"></div>`;
@@ -24,12 +24,12 @@
   }
 
   async function render() {
-    title.textContent = 'Vision degradation projection';
+    title.textContent = 'Myopia prediction';
     showMessage('Loading patient data…');
     try {
       const patient = await globalThis.VDCRevolution.getCurrentPatient();
-      title.textContent = `Vision degradation projection — ${patient.name}`;
-      globalThis.VDCChart.renderProjection(body, globalThis.VDCProjection.buildProjection(patient));
+      title.textContent = `Myopia prediction — ${patient.name}`;
+      globalThis.VDCChart.renderPatient(body, patient);
     } catch (err) {
       showMessage(err.message, 'vdc-error');
     }
@@ -54,7 +54,7 @@
     button.id = 'vdc-header-button';
     button.type = 'button';
     button.className = anchor.className;
-    button.textContent = 'Vision Projection';
+    button.textContent = 'Myopia Prediction';
     button.addEventListener('click', toggle);
     wrapper.appendChild(button);
     anchorWrapper.after(document.createTextNode(' '), wrapper);

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Vision Degradation Chart",
-  "version": "0.1.0",
+  "name": "Myopia Prediction",
+  "version": "0.2.0",
   "description": "Charts projected myopia progression for the open RevolutionEHR patient: untreated, treated, and historical trend.",
   "content_scripts": [
     {

@@ -94,7 +94,7 @@
     const ul = document.createElement('ul');
     ul.className = 'vdc-legend';
     for (const [color, label, dash] of [
-      [COLORS.untreated, 'Without treatment (−0.75 D/yr)', ''],
+      [COLORS.untreated, 'Without treatment (age-based rate)', ''],
       [COLORS.treated, 'With treatment (0 to −0.25 D/yr)', ''],
       [COLORS.trend, 'Current trend from history', '6 4'],
     ]) {
@@ -106,13 +106,34 @@
     return ul;
   }
 
+  const fmtRate = (r) => `${r < 0 ? '−' : ''}${Math.abs(r).toFixed(2)}`;
+
+  function bandLabel(b) {
+    if (b.from === 0) return `to age ${b.to - 1}`;
+    if (b.to === Infinity) return `age ${b.from}+`;
+    return `ages ${b.from}–${b.to - 1}`;
+  }
+
+  // One line listing the without-treatment rates used for this patient.
+  function rateSummary(projection) {
+    const p = document.createElement('p');
+    p.className = 'vdc-rates';
+    const who = [];
+    if (projection.sexKnown) who.push(projection.stopAge === 18 ? 'female' : 'male');
+    if (projection.asian) who.push('Asian');
+    const prefix = who.length ? `Without-treatment rates (${who.join(', ')})` : 'Without-treatment rates';
+    p.textContent = `${prefix}: ` + projection.bands.map((b) => `${fmtRate(b.rate)} D/yr ${bandLabel(b)}`).join(' · ') + '.';
+    return p;
+  }
+
   function renderProjection(container, projection) {
     container.replaceChildren();
     container.appendChild(legend());
+    container.appendChild(rateSummary(projection));
     if (!projection.sexKnown) {
       const warn = document.createElement('p');
       warn.className = 'vdc-warn';
-      warn.textContent = `Patient sex isn't recorded as female or male, so progression is assumed to continue until age ${projection.stopAge}.`;
+      warn.textContent = `Patient sex isn't recorded as female or male, so the faster (female) rate is used and progression is assumed to continue until age ${projection.stopAge}.`;
       container.appendChild(warn);
     }
     const row = document.createElement('div');
@@ -122,5 +143,23 @@
     container.appendChild(row);
   }
 
-  root.VDCChart = { renderProjection };
+  // Patient options (the Asian checkbox) above the chart; changing them redraws the chart.
+  function renderPatient(container, patient) {
+    container.replaceChildren();
+    const controls = document.createElement('div');
+    controls.className = 'vdc-controls';
+    const label = document.createElement('label');
+    const asian = document.createElement('input');
+    asian.type = 'checkbox';
+    label.append(asian, ` Asian (progresses ${Math.abs(root.VDCProjection.ASIAN_EXTRA_RATE).toFixed(2)} D/yr faster)`);
+    controls.appendChild(label);
+    const chart = document.createElement('div');
+    container.append(controls, chart);
+
+    const draw = () => renderProjection(chart, root.VDCProjection.buildProjection(patient, { asian: asian.checked }));
+    asian.addEventListener('change', draw);
+    draw();
+  }
+
+  root.VDCChart = { renderProjection, renderPatient };
 })(globalThis);

@@ -26,6 +26,9 @@
 #vdc-panel .vdc-eye svg { width: 100%; height: auto; }
 #vdc-panel .vdc-legend { display: flex; flex-wrap: wrap; gap: 16px; list-style: none; padding: 0; margin: 0 0 8px; }
 #vdc-panel .vdc-legend li { display: flex; align-items: center; gap: 6px; }
+#vdc-panel .vdc-controls { margin: 0 0 8px; }
+#vdc-panel .vdc-controls label { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+#vdc-panel .vdc-rates { margin: 0 0 8px; color: #555; }
 #vdc-panel .vdc-note { margin: 2px 0 0; color: #555; }
 #vdc-panel .vdc-warn { padding: 6px 10px; background: #fff4d6; border-radius: 4px; }
 #vdc-panel .vdc-error { color: #a33; }
