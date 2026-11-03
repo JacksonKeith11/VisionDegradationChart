@@ -60,7 +60,14 @@
     if (!panel.hidden) render(false);
   });
   panel.querySelector('.vdc-close').addEventListener('click', () => (panel.hidden = true));
-  window.addEventListener('hashchange', syncVisibility);
+  // RevolutionEHR changes routes with history.pushState, which fires no event a content script can hear.
+  let lastUrl = location.href;
+  setInterval(() => {
+    if (location.href !== lastUrl) {
+      lastUrl = location.href;
+      syncVisibility();
+    }
+  }, 1000);
 
   document.body.append(launcher, panel);
   syncVisibility();
