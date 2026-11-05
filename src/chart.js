@@ -42,7 +42,8 @@
     const yStep = yMax - yMin > 8 ? 2 : yMax - yMin > 4 ? 1 : 0.5;
 
     const x = (age) => M.left + ((age - xMin) / (xMax - xMin)) * (W - M.left - M.right);
-    const y = (se) => M.top + ((yMax - se) / (yMax - yMin)) * (H - M.top - M.bottom);
+    // Flipped axis: more myopic (more negative) is higher, so worsening lines go up.
+    const y = (se) => M.top + ((se - yMin) / (yMax - yMin)) * (H - M.top - M.bottom);
     const path = (pts) => pts.map((p, i) => `${i ? 'L' : 'M'}${x(p.age).toFixed(1)},${y(p.se).toFixed(1)}`).join('');
 
     const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': `${title} projected spherical equivalent by age` });
@@ -56,11 +57,11 @@
       el('text', { x: x(t), y: H - M.bottom + 16, 'text-anchor': 'middle', 'font-size': 11, fill: COLORS.text }, svg).textContent = t;
     }
     el('text', { x: (M.left + W - M.right) / 2, y: H - 6, 'text-anchor': 'middle', 'font-size': 12, fill: COLORS.text }, svg).textContent = 'Age (years)';
-    el('text', { x: 14, y: (M.top + H - M.bottom) / 2, 'text-anchor': 'middle', 'font-size': 12, fill: COLORS.text, transform: `rotate(-90 14 ${(M.top + H - M.bottom) / 2})` }, svg).textContent = 'SE (D)';
+    el('text', { x: 14, y: (M.top + H - M.bottom) / 2, 'text-anchor': 'middle', 'font-size': 12, fill: COLORS.text, transform: `rotate(-90 14 ${(M.top + H - M.bottom) / 2})` }, svg).textContent = 'SE (D), more myopic ↑';
 
     if (stopAge >= xMin && stopAge <= xMax) {
       el('line', { x1: x(stopAge), x2: x(stopAge), y1: M.top, y2: H - M.bottom, stroke: '#888', 'stroke-dasharray': '3 3' }, svg);
-      el('text', { x: x(stopAge) - 4, y: M.top + 10, 'text-anchor': 'end', 'font-size': 10, fill: '#666' }, svg).textContent = `progression stops (${stopAge})`;
+      el('text', { x: x(stopAge) - 4, y: H - M.bottom - 6, 'text-anchor': 'end', 'font-size': 10, fill: '#666' }, svg).textContent = `progression stops (${stopAge})`;
     }
 
     // Treatment band: area between the best (0/yr) and worst (-0.25/yr) cases.
